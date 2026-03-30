@@ -15,6 +15,18 @@ document.addEventListener('DOMContentLoaded', function() {
   // URL del servidor (desde config.js)
   const SERVER_URL = (typeof CONFIG !== 'undefined') ? CONFIG.SERVER_URL : 'http://localhost:3000';
 
+  function sendExtractMessage(tabId) {
+    return new Promise((resolve, reject) => {
+      chrome.tabs.sendMessage(tabId, { action: 'extractUrls' }, (response) => {
+        if (chrome.runtime.lastError) {
+          reject(new Error(chrome.runtime.lastError.message));
+          return;
+        }
+        resolve(response);
+      });
+    });
+  }
+
   extractBtn.addEventListener('click', async function() {
     extractBtn.disabled = true;
     statusEl.textContent = '⏳ Extrayendo URLs...';
@@ -38,31 +50,34 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
 
-      // Enviar mensaje al content script
-      chrome.tabs.sendMessage(tab.id, { action: "extractUrls" }, function(response) {
-        if (chrome.runtime.lastError) {
-          console.error('Error:', chrome.runtime.lastError);
-          statusEl.textContent = '❌ Error: ' + chrome.runtime.lastError.message;
-          statusEl.className = 'error';
-          extractBtn.disabled = false;
-          return;
-        }
-
-        if (response && response.success) {
-          // Mostrar las URLs
-          currentUrls = response.urls;
-          urlsTextarea.value = response.urls;
-          urlListEl.style.display = 'block';
-          statusEl.textContent = `✅ Se encontraron ${response.count} URLs`;
-          statusEl.className = 'success';
+      let response;
+      try {
+        response = await sendExtractMessage(tab.id);
+      } catch (initialError) {
+        if (initialError.message.includes('Receiving end does not exist')) {
+          await chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            files: ['content.js']
+          });
+          response = await sendExtractMessage(tab.id);
         } else {
-          statusEl.textContent = '❌ No se encontraron videos en esta página';
-          statusEl.className = 'error';
-          urlListEl.style.display = 'none';
+          throw initialError;
         }
+      }
 
-        extractBtn.disabled = false;
-      });
+      if (response && response.success) {
+        currentUrls = response.urls;
+        urlsTextarea.value = response.urls;
+        urlListEl.style.display = 'block';
+        statusEl.textContent = `✅ Se encontraron ${response.count} URLs`;
+        statusEl.className = 'success';
+      } else {
+        statusEl.textContent = '❌ No se encontraron videos en esta página';
+        statusEl.className = 'error';
+        urlListEl.style.display = 'none';
+      }
+
+      extractBtn.disabled = false;
     } catch (error) {
       console.error('Error:', error);
       statusEl.textContent = '❌ Error: ' + error.message;

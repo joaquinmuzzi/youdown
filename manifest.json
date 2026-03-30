@@ -8,7 +8,7 @@
     "activeTab"
   ],
   "host_permissions": [
-    "https://www.youtube.com/*",
+    "https://*.youtube.com/*",
     "https://youtube.com/*"
   ],
   "action": {
@@ -18,7 +18,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.youtube.com/*",
+        "https://*.youtube.com/*",
         "https://youtube.com/*"
       ],
       "js": ["content.js"]
