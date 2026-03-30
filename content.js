@@ -19,32 +19,6 @@ function extractYoutubeUrls() {
       }
     });
     
-    if (count === 0) {
-      // Si no encuentra videos con ese selector, buscar alternativas
-      console.log("No se encontraron videos con selector directo, buscando alternativas...");
-      
-      // Alternativa 1: ytd-video-renderer
-      document.querySelectorAll("ytd-video-renderer").forEach(function(element) {
-        try {
-          const link = element.querySelector("a#thumbnail");
-          if (link && link.href) {
-            urls += link.href + "\n";
-            count++;
-          }
-        } catch (e) {}
-      });
-      
-      // Alternativa 2: a.yt-simple-endpoint con href que contenga watch
-      if (count === 0) {
-        document.querySelectorAll("a.yt-simple-endpoint[href*='v=']").forEach(function(element) {
-          if (element.href && element.href.includes("watch")) {
-            urls += element.href.split("&")[0] + "\n";
-            count++;
-          }
-        });
-      }
-    }
-    
     return {
       urls: urls,
       count: count,

@@ -1,6 +1,6 @@
 {
   "name": "YouDown",
-  "description": "Descarga todas las URLs de un mix de YouTube",
+  "description": "Descarga los mp3 de un mix de YouTube",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": [

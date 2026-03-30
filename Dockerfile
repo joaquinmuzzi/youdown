@@ -1,9 +1,7 @@
 FROM node:18-alpine
 
-# Instalar yt-dlp, ffmpeg y otras dependencias
 RUN apk add --no-cache ffmpeg yt-dlp
 
-# Establecer directorio de trabajo
 WORKDIR /app
 
 # Copiar archivos

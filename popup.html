@@ -16,12 +16,27 @@
     </button>
     
     <p class="info" id="status"></p>
+
+        <div id="progressCard" class="progress-card" style="display:none;">
+          <div class="progress-header">
+            <span class="spinner" aria-hidden="true"></span>
+            <div>
+              <p class="progress-text" id="progressText">⏳ Descargando archivos...</p>
+              <p class="progress-meta" id="progressMeta">Esperando progreso...</p>
+            </div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+          <p class="progress-current-file" id="progressCurrentFile">Esperando actividad...</p>
+        </div>
+
     <div id="urlList" class="url-list" style="display:none;">
       <h3>URLs encontradas:</h3>
       <textarea id="urls" readonly></textarea>
       <div class="button-group">
-        <button id="copyBtn" class="btn btn-secondary" style="flex: 1;">📋 Copiar</button>
-        <button id="downloadMp3Btn" class="btn btn-success" style="flex: 1;">🎵 Descargar MP3</button>
+            <button id="copyBtn" class="btn btn-secondary inline-btn">📋 Copiar</button>
+            <button id="downloadMp3Btn" class="btn btn-success inline-btn">🎵 Descargar MP3</button>
       </div>
       <p class="info" id="downloadStatus"></p>
     </div>
