@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouDown</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>YouDown</h1>
+    <p class="subtitle">Descarga URLs de tu mix de YouTube</p>
+    
+    <button id="extractBtn" class="btn btn-primary">
+      Extraer URLs
+    </button>
+    
+    <p class="info" id="status"></p>
+    <div id="urlList" class="url-list" style="display:none;">
+      <h3>URLs encontradas:</h3>
+      <textarea id="urls" readonly></textarea>
+      <div class="button-group">
+        <button id="copyBtn" class="btn btn-secondary" style="flex: 1;">📋 Copiar</button>
+        <button id="downloadMp3Btn" class="btn btn-success" style="flex: 1;">🎵 Descargar MP3</button>
+      </div>
+      <p class="info" id="downloadStatus"></p>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
